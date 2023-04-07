@@ -15,5 +15,4 @@ object GitHubApi {
             .build()
             .create(GitHubApiService::class.java)
     }
-
 }
