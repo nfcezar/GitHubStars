@@ -1,11 +1,7 @@
 package com.example.feature.repository
 
-import com.example.core.service.GitHubApiService
+import com.example.core.model.GitHubItem
 
-class GitHubRepository(
-    private val gitHubApiService: GitHubApiService
-) {
-    suspend fun getData() {
-        gitHubApiService.search()
-    }
+interface GitHubRepository {
+    suspend fun getData(): List<GitHubItem>
 }
