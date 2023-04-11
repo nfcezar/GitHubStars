@@ -15,7 +15,6 @@ class RepoDetailsRepository(
     ): Response<OwnerRepoResponse> {
         return apiService.getRepo(ownerLogin, repoName)
     }
-
     override suspend fun getDataFromResponse(response: Response<OwnerRepoResponse>): List<GitHubUser> {
         return response.body()!!.items
     }

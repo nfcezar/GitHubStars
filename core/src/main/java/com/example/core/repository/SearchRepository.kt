@@ -10,7 +10,6 @@ class SearchRepository(
 ) : BaseRepository {
     override suspend fun fetchRemote(): Response<SearchResponse> =
         apiService.search()
-
     override suspend fun getDataFromResponse(response: Response<SearchResponse>): List<GitHubRepo> =
         response.body()!!.items
 }
