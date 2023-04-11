@@ -24,9 +24,6 @@ class MainViewModel(
     var uiState: GitHubUiState by mutableStateOf(GitHubUiState.Loading)
         private set
 
-    private val _repos = MutableLiveData<List<GitHubUser>>()
-    val repos: LiveData<List<GitHubUser>> get() = _repos
-
     init {
         api.createInstance()
         getData()
@@ -36,21 +33,19 @@ class MainViewModel(
         viewModelScope.launch {
             try {
                 val response = searchRepository.fetchRemote()
-                val items = searchRepository.getDataFromResponse(response)
-                uiState = GitHubUiState.Success(items)
+                val repoList = searchRepository.getDataFromResponse(response)
+                uiState = GitHubUiState.Success(repoList)
 
-                val repoName = items.map {
+                val repoName = repoList.map {
                     it.name
                 }.first()
 
-                val ownerName = items.map {
+                val ownerName = repoList.map {
                     it.owner.login
                 }.first()
 
                 val userResponse = repoDetailsRepository.fetchRemote(ownerName, repoName)
-                val userItems = repoDetailsRepository.getDataFromResponse(userResponse)
-                _repos.value = userItems
-
+                repoDetailsRepository.getDataFromResponse(userResponse)
 
             } catch (e: Exception) {
                 uiState = GitHubUiState.Error
@@ -61,7 +56,7 @@ class MainViewModel(
     companion object {
         interface GitHubUiState {
             data class Success(
-                val items: List<GitHubRepo>
+                val repoList: List<GitHubRepo>
             ) : GitHubUiState
 
             object Error : GitHubUiState

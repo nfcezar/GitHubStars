@@ -4,11 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -31,7 +34,6 @@ import com.example.core.model.GitHubRepo
 import com.example.feature.R
 import com.example.feature.presentation.viewmodel.MainViewModel
 
-
 @Composable
 fun Home(
     gitHubUiState: MainViewModel.Companion.GitHubUiState,
@@ -40,7 +42,7 @@ fun Home(
 ) {
     when (gitHubUiState) {
         is MainViewModel.Companion.GitHubUiState.Success -> SuccessGridScreen(
-            gitHubUiState.items,
+            gitHubUiState.repoList,
             modifier
         )
         is MainViewModel.Companion.GitHubUiState.Error -> ErrorScreen(
@@ -84,7 +86,8 @@ fun CardSuccess(
     Card(
         modifier
             .padding(8.dp)
-            .size(180.dp)
+            .wrapContentWidth(Alignment.Start)
+            .wrapContentHeight(Alignment.Top)
             .fillMaxSize()
             .aspectRatio(1f),
         elevation = 8.dp,
@@ -96,14 +99,6 @@ fun CardSuccess(
                 .fillMaxSize(),
 
             ) {
-/*            Image(
-                modifier = Modifier
-                    .clip(shape = CircleShape)
-                    .size(size = 62.dp),
-                painter = painterResource(id = R.drawable.baseline_broken_image_24),
-                contentDescription = "broken image",
-                contentScale = ContentScale.Crop
-            )*/
             AsyncImage(
                 ImageRequest.Builder(LocalContext.current)
                     .data(gitHubRepo.owner.avatarUrl)
@@ -111,8 +106,11 @@ fun CardSuccess(
                 contentDescription = "GitHub Avatar",
                 modifier = Modifier
                     .clip(shape = CircleShape)
-                    .size(size = 62.dp),
+                    .size(size = 50.dp),
             )
+            Spacer(modifier = modifier.size(12.dp))
+
+            Text(stringResource(id = R.string.owner_name) + gitHubRepo.owner.login)
             Text(stringResource(id = R.string.repo_name) + gitHubRepo.name)
             Text(stringResource(id = R.string.stars_number) + gitHubRepo.stars.toString())
             Text(stringResource(id = R.string.forks_number) + gitHubRepo.forks.toString())
@@ -135,6 +133,5 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         )
     }
 }
-
 
 

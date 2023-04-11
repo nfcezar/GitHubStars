@@ -13,7 +13,8 @@ interface GitHubApiService {
     @GET(REPO_URL)
     suspend fun search(
         @Query("q") searchByKotlinLanguage: String = "language:kotlin",
-        @Query("sort") sortByStars: String = "stars"
+        @Query("sort") sortByStars: String = "stars",
+        @Query("per_page") perPage: Int = 100
     ): Response<SearchResponse>
 
     @GET("repos/{owner}/{name}")

@@ -49,8 +49,9 @@ class MainActivity : ComponentActivity() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colors.background
             ) {
-                Home(gitHubUiState = viewModel.uiState,
-                    action = { viewModel.getData() }
+                Home(
+                    gitHubUiState = viewModel.uiState,
+                    action = { viewModel.getData() },
                 )
             }
         }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="repo_name">Name:</string>
+    <string name="owner_name">Owner:</string>
+    <string name="repo_name">Repo:</string>
     <string name="stars_number">Stars:</string>
     <string name="forks_number">Forks:</string>
 
