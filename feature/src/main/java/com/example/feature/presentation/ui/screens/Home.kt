@@ -32,7 +32,8 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.core.model.GitHubRepo
 import com.example.feature.R
-import com.example.feature.presentation.viewmodel.MainViewModel
+import com.example.feature.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun Home(

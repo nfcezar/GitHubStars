@@ -1,4 +1,4 @@
-package com.example.feature.repository
+package com.example.core.repository
 
 import com.example.core.model.GitHubRepo
 import com.example.core.response.SearchResponse

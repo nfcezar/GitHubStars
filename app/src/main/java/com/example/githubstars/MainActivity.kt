@@ -13,7 +13,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.feature.presentation.ui.screens.Home
-import com.example.feature.presentation.viewmodel.MainViewModel
+import com.example.feature.viewmodel.MainViewModel
 import com.example.githubstars.ui.theme.GitHubStarsTheme
 import org.koin.android.ext.android.inject
 

@@ -1,4 +1,4 @@
-package com.example.feature.repository
+package com.example.core.repository
 
 import com.example.core.model.GitHubUser
 import com.example.core.response.OwnerRepoResponse

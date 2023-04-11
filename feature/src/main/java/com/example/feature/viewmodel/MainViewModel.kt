@@ -1,40 +1,35 @@
-package com.example.feature.presentation.viewmodel
+package com.example.feature.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.core.api.GitHubApi
 import com.example.core.model.GitHubRepo
-import com.example.core.model.GitHubUser
-import com.example.feature.repository.RepoDetailsRepository
-import com.example.feature.repository.SearchRepository
+import com.example.core.repository.RepoDetailsRepository
+import com.example.core.repository.SearchRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
 
 class MainViewModel(
     private val searchRepository: SearchRepository,
     private val repoDetailsRepository: RepoDetailsRepository,
 ) : ViewModel() {
 
-    private val api = GitHubApi
-
     var uiState: GitHubUiState by mutableStateOf(GitHubUiState.Loading)
         private set
 
     init {
-        api.createInstance()
         getData()
     }
 
     fun getData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = searchRepository.fetchRemote()
                 val repoList = searchRepository.getDataFromResponse(response)
-                uiState = GitHubUiState.Success(repoList)
 
                 val repoName = repoList.map {
                     it.name
@@ -47,10 +42,20 @@ class MainViewModel(
                 val userResponse = repoDetailsRepository.fetchRemote(ownerName, repoName)
                 repoDetailsRepository.getDataFromResponse(userResponse)
 
-            } catch (e: Exception) {
-                uiState = GitHubUiState.Error
+                withContext(Dispatchers.Main) {
+                    setState(GitHubUiState.Success(repoList))
+                }
+
+            } catch (e: IOException) {
+                withContext(Dispatchers.Main) {
+                    setState(GitHubUiState.Error)
+                }
             }
         }
+    }
+
+    private fun setState(value: GitHubUiState) {
+        uiState = value
     }
 
     companion object {
